@@ -23,7 +23,7 @@ class GrowthFactory extends Factory
     public function definition()
     {
         return [
-            'program_id' => Program::latest()->first()->id,
+            'program_id' => Program::factory(),
             'date' => $this->faker->date(),
             'description' => $this->faker->paragraph
         ];
