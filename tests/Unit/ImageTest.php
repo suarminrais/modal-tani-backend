@@ -14,14 +14,11 @@ class ImageTest extends TestCase
     /** @test */
     public function it_belongs_to_one_user()
     {
-        $user = User::factory()->create(["name" => 'uzumaki']);
+        $user = User::factory()->hasImage(1)->create(["name" => 'uzumaki']);
         $image = Image::factory()->for(User::factory(),'imageable')->create([
             "name" => "uzumaki.jpg"
         ]);
 
-        $user = $image->user()->count();
-
-        $this->assertTrue($user === 1);
         $this->assertDatabaseHas('users',[
             "name" => "uzumaki"
         ]);
