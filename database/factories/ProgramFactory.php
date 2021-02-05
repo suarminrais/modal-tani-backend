@@ -23,7 +23,7 @@ class ProgramFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::latest()->get()->id,
+            'user_id' => User::latest()->first()->id,
             'name' => $this->faker->title,
             'detail' => $this->faker->paragraph(),
             'location' => $this->faker->city,

@@ -13,4 +13,9 @@ class Program extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function growth()
+    {
+        return $this->hasMany(Growth::class);
+    }
 }
