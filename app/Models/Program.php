@@ -18,4 +18,9 @@ class Program extends Model
     {
         return $this->hasMany(Growth::class);
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

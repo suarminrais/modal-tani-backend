@@ -41,7 +41,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function program()
+    public function programs()
     {
         return $this->hasMany(Program::class);
     }
