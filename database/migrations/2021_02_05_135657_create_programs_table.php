@@ -22,7 +22,7 @@ class CreateProgramsTable extends Migration
             $table->date('start_at');
             $table->date('end_at');
             $table->float('target_fund');
-            $table->enum('status', ["wait", "start", "done"]);
+            $table->enum('status', ["wait", "start", "done"])->default('wait');
             $table->timestamps();
         });
     }

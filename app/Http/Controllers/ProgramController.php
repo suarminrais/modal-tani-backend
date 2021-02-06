@@ -2,84 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProgramRequest;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($page = $request->get('perPage'))
+        {
+            return Program::latest()->paginate($page);
+        }
+
+        return Program::latest()->take(3)->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(ProgramRequest $request)
     {
-        //
+        $request->merge([
+            "user_id" => Auth::user()->id,
+        ]);
+
+        return Program::make($request->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Program  $program
-     * @return \Illuminate\Http\Response
-     */
     public function show(Program $program)
     {
-        //
+        return $program;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Program  $program
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Program $program)
+    public function update(ProgramRequest $request, Program $program)
     {
-        //
+        return $program->update($request->all());
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Program  $program
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Program $program)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Program  $program
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Program $program)
     {
-        //
+        $program->delete();
+
+        return response()->json([
+            "message" => "Program Deleted!"
+        ]);
     }
 }

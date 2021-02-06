@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\AccessTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthenticationController;
+use App\Http\Controllers\ProgramController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthenticationController::class, 'store']);
+Route::post('token', [AccessTokenController::class, 'store']);
 Route::middleware('auth:sanctum')->post('logout', [AuthenticationController::class, 'destroy']);
+
+//route program
+Route::get('program', [ProgramController::class,'index']);
+Route::middleware('auth:sanctum')->post('program', [ProgramController::class,'store']);

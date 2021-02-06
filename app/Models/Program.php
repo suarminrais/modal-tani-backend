@@ -9,6 +9,15 @@ class Program extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+            "name",
+            "detail",
+            "location",
+            "start_at",
+            "end_at",
+            "target_fund"
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
