@@ -27,4 +27,7 @@ Route::middleware('auth:sanctum')->post('logout', [AuthenticationController::cla
 
 //route program
 Route::get('program', [ProgramController::class,'index']);
+Route::get('program/{program}', [ProgramController::class,'show']);
 Route::middleware('auth:sanctum')->post('program', [ProgramController::class,'store']);
+Route::middleware('auth:sanctum')->post('program/{program}', [ProgramController::class,'update']);
+Route::middleware('auth:sanctum')->delete('program/{program}', [ProgramController::class,'destroy']);

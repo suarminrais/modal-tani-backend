@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProgramRequest;
 use App\Models\Program;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,15 +36,26 @@ class ProgramController extends Controller
 
     public function update(ProgramRequest $request, Program $program)
     {
-        return $program->update($request->all());
+        $program->update($request->all());
+
+        return response()->json([
+            "message" => "Program Updated!"
+        ]);
     }
 
     public function destroy(Program $program)
     {
-        $program->delete();
+        if($program->user_id === Auth::user()->id)
+        {
+            $program->delete();
+
+            return response()->json([
+                "message" => "Program Deleted!"
+            ]);
+        }
 
         return response()->json([
-            "message" => "Program Deleted!"
-        ]);
+            "message" => "Program Not Found!"
+        ],404);
     }
 }
