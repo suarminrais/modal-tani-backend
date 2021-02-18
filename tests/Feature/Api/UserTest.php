@@ -31,4 +31,24 @@ class UserTest extends TestCase
         
         $this->assertEquals($program->count(), $user->programs()->count());
     }
+
+    /** @test */
+    public function it_can_see_all_user_when_is_admin()
+    {
+        $users = User::factory()->count(9)->create();
+        $admin = $users[0]->role->name;
+        $role = Role::factory()->create();
+
+        Sanctum::actingAs($users[0]);
+
+        $response = $this->get('/api/admin/user');
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                'data' => true
+            ]);
+
+        $this->assertEquals($admin, $role[0]);
+    }
 }
