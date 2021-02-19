@@ -21,34 +21,31 @@ class UserTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->get('/api/user/program');
+        $response = $this->get('/api/user');
 
         $response
             ->assertOk()
             ->assertJson([
                 'data' => true
             ]);
-        
+
         $this->assertEquals($program->count(), $user->programs()->count());
     }
 
     /** @test */
     public function it_can_see_all_user_when_is_admin()
     {
-        $users = User::factory()->count(9)->create();
-        $admin = $users[0]->role->name;
-        $role = Role::factory()->create();
+        User::factory()->count(9)->create();
+        $admin = User::factory()->create([
+            "type" => "admin"
+        ]);
 
-        Sanctum::actingAs($users[0]);
+        Sanctum::actingAs($admin);
 
-        $response = $this->get('/api/admin/user');
+        $response = $this->get('/api/user');
 
         $response
             ->assertOk()
-            ->assertJson([
-                'data' => true
-            ]);
-
-        $this->assertEquals($admin, $role[0]);
+            ->assertJsonCount(10, 'data');
     }
 }

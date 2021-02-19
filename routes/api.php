@@ -23,11 +23,11 @@ Route::post('token', [AccessTokenController::class, 'store']);
 Route::middleware('auth:sanctum')->post('logout', [AuthenticationController::class, 'destroy']);
 
 //route program
-Route::get('program', [ProgramController::class,'index']);
-Route::get('program/{program}', [ProgramController::class,'show']);
-Route::middleware('auth:sanctum')->post('program', [ProgramController::class,'store']);
-Route::middleware('auth:sanctum')->post('program/{program}', [ProgramController::class,'update']);
-Route::middleware('auth:sanctum')->delete('program/{program}', [ProgramController::class,'destroy']);
+Route::get('program', [ProgramController::class, 'index']);
+Route::get('program/{program}', [ProgramController::class, 'show']);
+Route::middleware('auth:sanctum')->post('program', [ProgramController::class, 'store']);
+Route::middleware('auth:sanctum')->post('program/{program}', [ProgramController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('program/{program}', [ProgramController::class, 'destroy']);
 
 //route user
-Route::middleware('auth:sanctum')->get('user/program', [UserController::class,'index']);
+Route::middleware('auth:sanctum')->get('user', [UserController::class, 'index']);
