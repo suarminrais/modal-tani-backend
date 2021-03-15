@@ -46,6 +46,52 @@ class UserTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonCount(10, 'data');
+            ->assertJsonCount(10);
+    }
+
+    /** @test */
+    public function it_can_create_user_when_is_admin()
+    {
+        $admin = User::factory()->create([
+            "type" => "admin"
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        $user = [
+            "name" => "amien",
+            "email" => "test@test.com",
+            "password" => "asdfgh",
+            "password_confirmation" => "asdfgh",
+        ];
+
+        $response = $this->post('/api/user', $user);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                "name" => $user['name'],
+                "email" => $user['email']
+            ]);
+    }
+
+    /** @test */
+    public function it_can_not_create_user_when_is_not_admin()
+    {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $user = [
+            "name" => "amien",
+            "email" => "test@test.com",
+            "password" => "asdfgh",
+            "password_confirmed" => "asdfgh",
+        ];
+
+        $response = $this->post('/api/user', $user);
+
+        $response
+            ->assertNotFound();
     }
 }
