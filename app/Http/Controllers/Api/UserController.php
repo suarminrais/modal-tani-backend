@@ -35,11 +35,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        if (Gate::allows('isAdmin')) {
-            return User::findOrFail($id);
-        }
-
-        if ($id == Auth::user()->id) {
+        if (Gate::allows('isAdmin') || $id == Auth::user()->id) {
             return User::findOrFail($id);
         }
 
@@ -48,7 +44,20 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            "name" => "sometimes|string",
+            "email" => "sometimes|unique:users",
+            "password" => "sometimes|min:6|confirmed"
+        ]);
+
+        if (Gate::allows('isAdmin') || $id == Auth::user()->id) {
+            $user = User::findOrFail($id);
+            $user->update($request->all());
+
+            return $user;
+        }
+
+        return abort(404);
     }
 
     public function destroy($id)

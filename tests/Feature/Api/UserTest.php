@@ -146,4 +146,68 @@ class UserTest extends TestCase
                 "email" => $user->email
             ]);
     }
+
+    /** @test */
+    public function it_can_update_all_user_info_when_is_admin()
+    {
+        $user = User::factory()->create();
+        $admin = User::factory()->create([
+            'type' => "admin"
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        $req = [
+            "name" => "ake",
+        ];
+
+        $response = $this->put("/api/user/$user->id", $req);
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                "name" => $req['name'],
+                "email" => $user->email,
+                "type" => "pemodal"
+            ]);
+    }
+
+    /** @test */
+    public function it_can_not_update_other_user_info_when_is_not_admin()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        Sanctum::actingAs($user2);
+
+        $req = [
+            "name" => "ake",
+        ];
+
+        $response = $this->put("/api/user/$user->id", $req);
+
+        $response
+            ->assertNotFound();
+    }
+
+    /** @test */
+    public function it_can_update_user_data()
+    {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $req = [
+            "name" => "ake",
+        ];
+
+        $response = $this->put("/api/user/$user->id", $req);
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                "name" => $req['name'],
+                "email" => $user->email,
+            ]);
+    }
 }
