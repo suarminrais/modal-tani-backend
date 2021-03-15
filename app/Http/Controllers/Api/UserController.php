@@ -35,7 +35,15 @@ class UserController extends Controller
 
     public function show($id)
     {
-        //
+        if (Gate::allows('isAdmin')) {
+            return User::findOrFail($id);
+        }
+
+        if ($id == Auth::user()->id) {
+            return User::findOrFail($id);
+        }
+
+        return abort(404);
     }
 
     public function update(Request $request, $id)

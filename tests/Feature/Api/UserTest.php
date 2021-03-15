@@ -94,4 +94,56 @@ class UserTest extends TestCase
         $response
             ->assertNotFound();
     }
+
+    /** @test */
+    public function it_can_show_all_detail_user_when_is_admin()
+    {
+        $user = User::factory()->create();
+        $admin = User::factory()->create([
+            'type' => "admin"
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        $response = $this->get("/api/user/$user->id");
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                "name" => $user->name,
+                "email" => $user->email,
+                "type" => "pemodal"
+            ]);
+    }
+
+    /** @test */
+    public function it_can_not_show_other_user_detail_when_is_not_admin()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        Sanctum::actingAs($user2);
+
+        $response = $this->get("/api/user/$user->id");
+
+        $response
+            ->assertNotFound();
+    }
+
+    /** @test */
+    public function it_can_show_user_detail()
+    {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->get("/api/user/$user->id");
+
+        $response
+            ->assertOK()
+            ->assertJson([
+                'name' => $user->name,
+                "email" => $user->email
+            ]);
+    }
 }
