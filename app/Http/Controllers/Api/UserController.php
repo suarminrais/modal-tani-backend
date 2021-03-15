@@ -62,6 +62,15 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        //
+        if (Gate::allows('isAdmin') && $id != Auth::user()->id) {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            return [
+                "message" => "successfully deleted user!"
+            ];
+        }
+
+        return abort(404);
     }
 }

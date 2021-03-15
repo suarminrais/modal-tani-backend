@@ -210,4 +210,39 @@ class UserTest extends TestCase
                 "email" => $user->email,
             ]);
     }
+
+    /** @test */
+    public function it_can_delete_user_when_is_admin()
+    {
+        $admin = User::factory()->create([
+            'type' => 'admin'
+        ]);
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($admin);
+
+        $response = $this->delete("/api/user/$user->id");
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                "message" => "successfully deleted user!"
+            ]);
+    }
+
+    /** @test */
+    public function it_can_delete_it_self_when_is_admin()
+    {
+        $admin = User::factory()->create([
+            'type' => 'admin'
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        $response = $this->delete("/api/user/$admin->id");
+
+        $response
+            ->assertNotFound();
+    }
 }

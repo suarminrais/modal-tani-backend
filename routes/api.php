@@ -34,3 +34,4 @@ Route::middleware('auth:sanctum')->get('user', [UserController::class, 'index'])
 Route::middleware('auth:sanctum')->post('user', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->get('user/{id}', [UserController::class, 'show']);
 Route::middleware('auth:sanctum')->put('user/{id}', [UserController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('user/{id}', [UserController::class, 'destroy']);
