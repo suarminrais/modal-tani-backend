@@ -36,5 +36,8 @@ Route::middleware('auth:sanctum')->get('user/{id}', [UserController::class, 'sho
 Route::middleware('auth:sanctum')->put('user/{id}', [UserController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('user/{id}', [UserController::class, 'destroy']);
 
-//route for admin
+//route testimony
 Route::middleware('auth:sanctum')->post('testimony', [TestimonyController::class, 'store']);
+Route::middleware('auth:sanctum')->get('testimony', [TestimonyController::class, 'index']);
+Route::middleware('auth:sanctum')->get('testimony/{testimony}', [TestimonyController::class, 'show']);
+Route::middleware('auth:sanctum')->delete('testimony/{testimony}', [TestimonyController::class, 'destroy']);

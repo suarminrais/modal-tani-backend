@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\Image;
+use App\Models\Testimony;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -42,5 +44,65 @@ class TestimonyTest extends TestCase
             ]);
 
         Storage::assertExists('images');
+    }
+
+    /** @test */
+    public function it_can_get_testimonies()
+    {
+        $admin = User::factory()->create([
+            'type' => 'admin'
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        Testimony::factory()->count(6)->has(Image::factory())->create();
+
+        $response = $this->get('/api/testimony');
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                "data" => true
+            ]);
+    }
+
+    /** @test */
+    public function it_can_get_testimonie_detail()
+    {
+        $admin = User::factory()->create([
+            'type' => 'admin'
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        $testimony = Testimony::factory()->has(Image::factory())->create();
+
+        $response = $this->get("/api/testimony/$testimony->id");
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                "name" => $testimony->name
+            ]);
+    }
+
+    /** @test */
+    public function it_can_delete_testi()
+    {
+        $admin = User::factory()->create([
+            'type' => 'admin'
+        ]);
+
+        Sanctum::actingAs($admin);
+
+        $testimony = Testimony::factory()->has(Image::factory())->create();
+
+        $response = $this->delete("/api/testimony/$testimony->id");
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                "message" => "success"
+            ]);
     }
 }
