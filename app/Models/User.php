@@ -51,9 +51,4 @@ class User extends Authenticatable
     {
         return $this->morphOne(Image::class, 'imageable');
     }
-
-    public function role()
-    {
-        return $this->morphOne(Role::class, 'roleable');
-    }
 }

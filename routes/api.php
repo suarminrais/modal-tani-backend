@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\AccessTokenController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TestimonyController;
 use App\Http\Controllers\ProgramController;
 
 /*
@@ -35,3 +35,6 @@ Route::middleware('auth:sanctum')->post('user', [UserController::class, 'store']
 Route::middleware('auth:sanctum')->get('user/{id}', [UserController::class, 'show']);
 Route::middleware('auth:sanctum')->put('user/{id}', [UserController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('user/{id}', [UserController::class, 'destroy']);
+
+//route for admin
+Route::middleware('auth:sanctum')->post('testimony', [TestimonyController::class, 'store']);
