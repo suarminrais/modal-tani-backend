@@ -40,4 +40,5 @@ Route::middleware('auth:sanctum')->delete('user/{id}', [UserController::class, '
 Route::middleware('auth:sanctum')->post('testimony', [TestimonyController::class, 'store']);
 Route::middleware('auth:sanctum')->get('testimony', [TestimonyController::class, 'index']);
 Route::middleware('auth:sanctum')->get('testimony/{testimony}', [TestimonyController::class, 'show']);
+Route::middleware('auth:sanctum')->put('testimony/{testimony}', [TestimonyController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('testimony/{testimony}', [TestimonyController::class, 'destroy']);
